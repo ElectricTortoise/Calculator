@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FurtherPureVectorsCalculator", "FurtherPureVectorsCalculator\FurtherPureVectorsCalculator.pyproj", "{BE10684A-ED6A-44F4-A6D3-7C38445E5D61}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "test", "test\test.pyproj", "{93D4E4A0-13D5-4B5C-8450-E24745082DFB}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FPVCModule", "FPVCModule\FPVCModule.pyproj", "{934D718D-2A0E-40E1-BA22-89D6E731A15C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE10684A-ED6A-44F4-A6D3-7C38445E5D61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE10684A-ED6A-44F4-A6D3-7C38445E5D61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93D4E4A0-13D5-4B5C-8450-E24745082DFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93D4E4A0-13D5-4B5C-8450-E24745082DFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{934D718D-2A0E-40E1-BA22-89D6E731A15C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{934D718D-2A0E-40E1-BA22-89D6E731A15C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7F1FF6C0-9966-432D-A1AB-AA36BBB20739}
+	EndGlobalSection
+EndGlobal
