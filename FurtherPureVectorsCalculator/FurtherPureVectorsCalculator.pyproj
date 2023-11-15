@@ -11,6 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>FurtherPureVectorsCalculator</Name>
     <RootNamespace>FurtherPureVectorsCalculator</RootNamespace>
+    <IsWindowsApplication>False</IsWindowsApplication>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
