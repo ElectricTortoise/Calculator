@@ -43,7 +43,7 @@ def get_vector_input(numberOfVectors, vectorType):
 def get_point_input():
     while True:
         point = input("Input points: ")
-        if point == "-":
+        if point == "":
             return
         else:
             vector = np.array(point.split(), dtype="f")
@@ -56,7 +56,7 @@ def get_point_input():
 #Gets plane inputs from user in the form ax+by+cz=d, returns tuple of numpy array and float, (ndarray[a b c], d), where the numpy array is the normal vector
 def get_plane_input():
     plane = input("Input plane: ")
-    if plane == "-":
+    if plane == "":
         return
     else:
         planeCoefficients = re.split("x|y|z=", plane)
@@ -67,7 +67,7 @@ def get_plane_input():
 #Gets line inputs from the user in the form r=(x0 y0 z0)+t(x1 y1 z1), returns tuple of numpy arrays, (ndarray[x0 y0 z0], ndarray[x1 y1 z1])
 def get_line_input():
     line = input("Input line: ")
-    if line == "-":
+    if line == "":
         return
     else:
         lineVectors = re.split("\(|\)", line)
@@ -101,3 +101,6 @@ def normal_calc(vec1, vec2):
         return normal
 
 
+#Length calculation function
+def magnitude(x): 
+    return math.sqrt(sum(i**2 for i in x))
