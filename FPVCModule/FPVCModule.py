@@ -55,25 +55,35 @@ def get_point_input():
 
 #Gets plane inputs from user in the form ax+by+cz=d, returns tuple of numpy array and float, (ndarray[a b c], d), where the numpy array is the normal vector
 def get_plane_input():
-    plane = input("Input plane: ")
-    if plane == "":
-        return
-    else:
-        planeCoefficients = re.split("x|y|z=", plane)
-        normal = np.array([planeCoefficients[0], planeCoefficients[1], planeCoefficients[2]], dtype="f")
-        return normal, float(planeCoefficients[3])
+    while True:
+        plane = input("Input plane: ")
+        try:
+            if plane == "":
+                return
+            else:
+                planeCoefficients = re.split("x|y|z=", plane)
+                normal = np.array([planeCoefficients[0], planeCoefficients[1], planeCoefficients[2]], dtype="f")
+                return normal, float(planeCoefficients[3])
+        except:
+            print("Invalid input")
+            continue
 
 
 #Gets line inputs from the user in the form r=(x0 y0 z0)+t(x1 y1 z1), returns tuple of numpy arrays, (ndarray[x0 y0 z0], ndarray[x1 y1 z1])
 def get_line_input():
-    line = input("Input line: ")
-    if line == "":
-        return
-    else:
-        lineVectors = re.split("\(|\)", line)
-        fixedVector = np.array(re.split(" ", lineVectors[1]), dtype="f")
-        directionVector = np.array(re.split(" ", lineVectors[3]), dtype="f")
-        return fixedVector, directionVector
+    while True:
+        line = input("Input line: ")
+        try:
+            if line == "":
+                return
+            else:
+                lineVectors = re.split("\(|\)", line)
+                fixedVector = np.array(re.split(" ", lineVectors[1]), dtype="f")
+                directionVector = np.array(re.split(" ", lineVectors[3]), dtype="f")
+                return fixedVector, directionVector
+        except:
+            print("Invalid input")
+            continue
     
 
 #Plane calculation function

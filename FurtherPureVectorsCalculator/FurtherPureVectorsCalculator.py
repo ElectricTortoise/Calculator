@@ -2,7 +2,7 @@
 import math
 import re
 import FPVCModule as fpvc
-
+import sympy as sp
 
 
 
@@ -10,13 +10,17 @@ print("Note: Inputs for vectors should be given one at a time, decimals are acce
 print("      Inputs for points should be given in the form 'x y z'")
 print("      Inputs for planes should be given in the form, 'ax+by+cz=d'")
 print("      Inputs for lines should be given in the form 'r=(x0 y0 z0)+t(x1 y1 z1)'")
-print("      If there are no more inputs, press ENTER  \n")
+print("      If there are no more inputs, press ENTER")
+print("      Intersection calculations are slightly buggy, but will yield a correct result\n\n")
+
+calculationType = input('''What would you like to calculate?
+1 - Equation
+2 - Distance
+3 - Intersection
+4 - Angle \n\n''')
 
 
-calculationType = input("What would you like to calculate today? (Intersection, Angle, Foot, Distance, Equation) \n").upper()
-
-
-if calculationType == "EQUATION":
+if calculationType == "1":
     lineOrPlane = input("\nLine or plane? \n").upper()
     if lineOrPlane == "PLANE":
         #Plane calculation
@@ -58,11 +62,23 @@ if calculationType == "EQUATION":
         else:
             print("Insufficient information")
         
-
     elif lineOrPlane == "LINE":
-        print("")
-        
-elif calculationType == "DISTANCE":
+        totalPoints = []
+        for i in range(2):
+            pointInputs = fpvc.get_point_input()
+            while pointInputs is None:
+                print("Error: Minimum of 2 points required")
+                pointInputs = fpvc.get_point_input()
+            totalPoints.append(pointInputs)
+        dirVec = totalPoints[0]-totalPoints[1]
+        print(f'''\nDirection vector
+► {totalPoints[0]} - {totalPoints[1]}
+► {dirVec}
+''')
+        print(f'''Equation of line : {totalPoints[0]} + t{dirVec}''')
+
+
+elif calculationType == "2":
     
     #Getting inputs
     totalPoints = []
@@ -113,7 +129,7 @@ Area vector
                 height = fpvc.magnitude(totalLines[0][1])
                 print(f'''Area
 ► |BA x b1|                  
-► √({areaVector[0]}^2 + {areaVector[1]}^2 + {areaVector[2]}^2)    
+► √({areaVector[0]}^2 + {areaVector[1]}^2 + {areaVector[2]}^2)
 ► {area}
 
 Height
@@ -181,3 +197,160 @@ A1A2
 ► {finalDistance}''')
             except:
                 print("Insufficient inputs")
+                
+
+elif calculationType == "3":
+    
+    totalPoints = []
+    pointInputs = fpvc.get_point_input()
+    while pointInputs is not None:
+        totalPoints.append(pointInputs)
+        pointInputs = fpvc.get_point_input()
+        
+    totalLines = []
+    lineInputs = fpvc.get_line_input()
+    while lineInputs is not None:
+        totalLines.append(lineInputs)
+        lineInputs = fpvc.get_line_input()
+        
+    totalPlanes = []
+    planeInputs = fpvc.get_plane_input()
+    while planeInputs is not None:
+        totalPlanes.append(planeInputs)
+        planeInputs = fpvc.get_plane_input()   
+
+    intersectionType = input('''\nWhich intersection do you want to calculate?
+1 - Foot of point to plane
+2 - Line and plane
+3 - Plane and plane \n\n''')
+
+    match intersectionType:
+    
+        case "1":
+            try:
+                posVec = totalPoints[0]
+                normal = totalPlanes[0][0]
+                planeTranslation = totalPlanes[0][1]
+                parameter = ((planeTranslation - np.dot(posVec, normal)) / (fpvc.magnitude(normal)**2))
+                parameter = round(parameter, 10)
+                foot = posVec + (parameter*normal)
+            
+                print(f'''\nEquation of line to foot
+► r = {posVec} + t{normal}
+
+Equate the equation of the plane and line, solve for t
+Plane: r • n = d
+Line: r = a + tn
+
+► (a + tn) • n = d
+► ({posVec} + t{normal}) • {normal} = {planeTranslation}
+► {normal[0]*posVec[0]} + {normal[0]**2}t + {normal[1]*posVec[1]} + {normal[1]**2}t + {normal[2]*posVec[2]} + {normal[2]**2}t = {planeTranslation}
+► {normal[0]**2 + normal[1]**2 + normal[2]**2}t = {planeTranslation - normal[0]*posVec[0] - normal[1]*posVec[1] - normal[2]*posVec[2]}
+► t = {parameter}
+
+Foot 
+► {posVec} + {parameter}{normal}
+► {foot}''')
+
+            except:
+                print("Insufficient inputs")
+                
+        case "2":
+            try:
+                posVec = totalLines[0][0]
+                dirVec = totalLines[0][1]
+                normal = totalPlanes[0][0]
+                planeTranslation = totalPlanes[0][1]
+                parameter = ((planeTranslation - np.dot(posVec, normal)) / (np.dot(dirVec, normal)))
+                parameter = round(parameter, 10)
+                foot = posVec + (parameter*dirVec)
+                
+                print(f'''
+Equate the equation of the plane and line, solve for t
+Plane: r • n = d
+Line: r = a + tn
+
+► (a + tn) • n = d
+► ({posVec} + t{dirVec}) • {normal} = {planeTranslation}
+► {normal[0]*posVec[0]} + {normal[0]*dirVec[0]}t + {normal[1]*posVec[1]} + {normal[1]*dirVec[1]}t + {normal[2]*posVec[2]} + {normal[2]*dirVec[2]}t = {planeTranslation}
+► {normal[0]*dirVec[0] + normal[1]*dirVec[1] + normal[2]*dirVec[2]}t = {planeTranslation - normal[0]*posVec[0] - normal[1]*posVec[1] - normal[2]*posVec[2]}
+► t = {parameter}
+
+Intersection 
+► {posVec} + {parameter}{dirVec}
+► {foot}''')
+                
+            except:
+                print("Insufficient inputs")
+                
+        case "3":
+            normal1 = totalPlanes[0][0]
+            normal2 = totalPlanes[1][0]
+
+
+            print("Direction vector of line", end="\n► ")
+            dirVec = fpvc.cross(normal1, normal2)
+
+
+            for index, value in enumerate(dirVec):
+                if value != 0:   
+                    break
+
+
+            normal1[index] = 0
+            normal2[index] = 0
+
+            x,y,z = sp.symbols("x,y,z")
+            equation1 = sp.Eq(normal1[0]*x + normal1[1]*y + normal1[2]*z, totalPlanes[0][1])
+            equation2 = sp.Eq(normal2[0]*x + normal2[1]*y + normal2[2]*z, totalPlanes[1][1])
+            solutions = sp.solve((equation1, equation2),x,y,z)
+            if x not in solutions:
+                print(f'''Set x to be 0
+Solve simultaneous equations
+
+► 0 + {normal1[1]}y + {normal1[2]}z = {totalPlanes[0][1]}      ---- (1)
+► 0 + {normal2[1]}y + {normal2[2]}z = {totalPlanes[1][1]}      ---- (2)
+
+y:{solutions[y]}, z:{solutions[z]}
+
+Point on line: (0, {solutions[y]}, {solutions[z]})
+''')
+                solutions[x] = 0
+            elif y not in solutions:
+                print(f'''Set x to be 0
+Solve simultaneous equations
+
+► {normal1[0]}x + 0 + {normal1[2]}z = {totalPlanes[0][1]}      ---- (1)
+► {normal2[0]}x + 0 + {normal2[2]}z = {totalPlanes[1][1]}      ---- (2)
+
+x:{solutions[x]}, z:{solutions[z]}
+
+Point on line: ({solutions[x]}, 0, {solutions[z]})
+''')    
+                solutions[y] = 0
+            elif z not in solutions:
+                print(f'''Set x to be 0
+Solve simultaneous equations
+
+► {normal1[0]}x + {normal1[1]}y + 0 = {totalPlanes[0][1]}      ---- (1)
+► {normal2[0]}x + {normal2[1]}y + 0 = {totalPlanes[1][1]}      ---- (2)
+
+x:{solutions[x]}, y:{solutions[y]}
+
+Point on line: ({solutions[x]}, {solutions[y]}, 0)
+''')   
+                solutions[z] = 0
+    
+
+            xDir = solutions[x]
+            yDir = solutions[y]
+            zDir = solutions[z]
+
+            solutionList = np.array([xDir, yDir, zDir])
+
+            print(f'''Equation of line
+► {solutionList} + t{dirVec}''')
+
+
+elif calculationType == "4":
+    print("")
