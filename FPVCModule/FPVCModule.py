@@ -101,6 +101,7 @@ def plane_calc(point, vec1, vec2):
         print(f"Vector equation of plane   : r = {point} + λ{vec1} + μ{vec2} \n")
     return normal
 
+
 #Normal calculation function
 def normal_calc(vec1, vec2):
     print("Normal vector of plane:")

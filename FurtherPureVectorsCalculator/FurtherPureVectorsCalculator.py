@@ -353,4 +353,80 @@ Point on line: ({solutions[x]}, {solutions[y]}, 0)
 
 
 elif calculationType == "4":
-    print("")
+    
+    totalLines = []
+    lineInputs = fpvc.get_line_input()
+    while lineInputs is not None:
+        totalLines.append(lineInputs)
+        lineInputs = fpvc.get_line_input()
+        
+    totalPlanes = []
+    planeInputs = fpvc.get_plane_input()
+    while planeInputs is not None:
+        totalPlanes.append(planeInputs)
+        planeInputs = fpvc.get_plane_input()
+        
+    angleType = input('''\nWhich angle do you want to calculate?
+1 - Between line and plane
+2 - Between plane and plane\n''')
+    
+    match angleType:
+        
+        case "1":
+            try:
+                normal = totalPlanes[0][0]
+                dirVec = totalLines[0][1]
+                
+                print("\nDot product of normal and direction vector, n • b", end="\n► ")
+                dotProduct = abs(fpvc.dot(normal, dirVec))
+                
+                normalMag = fpvc.magnitude(normal) 
+                dirMag = fpvc.magnitude(dirVec)
+                magValue = normalMag * dirMag
+                angle = math.asin(dotProduct/magValue)
+                
+                print(f'''Magnitude of normal, |n|
+► √({normal[0]}^2 + {normal[1]}^2 + {normal[2]}^2)
+► {fpvc.magnitude(normal)}
+
+Magnitude of direction vector, |b|
+► √({dirVec[0]}^2 + {dirVec[1]}^2 + {dirVec[2]}^2)
+► {fpvc.magnitude(dirVec)}
+
+Angle between normal and line
+► arcsin[ |({dotProduct})| / ({normalMag} * {dirMag}) ]
+► {angle} rad      or       {angle*180/math.pi}
+''')
+
+
+            except:
+                print("Insufficient inputs")
+
+        case "2":
+            try:
+                normal1 = totalPlanes[0][0]
+                normal2 = totalPlanes[1][0]
+            
+                print("\nDot product of normal vectors, n1 • n2", end="\n► ")
+                dotProduct = abs(fpvc.dot(normal1, normal2))
+            
+                normalMag1 = fpvc.magnitude(normal1) 
+                normalMag2 = fpvc.magnitude(normal2)
+                magValue = normalMag1 * normalMag2
+                angle = math.acos(dotProduct/magValue)
+            
+                print(f'''Magnitude of normal 1, |n1|
+► √({normal1[0]}^2 + {normal1[1]}^2 + {normal1[2]}^2)
+► {fpvc.magnitude(normal1)}
+
+Magnitude of normal 2, |n2|
+► √({normal2[0]}^2 + {normal2[1]}^2 + {normal2[2]}^2)
+► {fpvc.magnitude(normal2)}
+
+Angle between normal and line
+► arccos[ |({dotProduct})| / ({normalMag1} * {normalMag2}) ]
+► {angle} rad      or       {angle*180/math.pi}
+''')
+                
+            except:
+                print("Insufficient inputs")
